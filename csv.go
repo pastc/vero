@@ -1,4 +1,4 @@
-package provago
+package vero
 
 import (
 	"crypto/sha256"
