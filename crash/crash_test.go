@@ -2,10 +2,13 @@ package crash
 
 import (
 	"fmt"
+	"math/rand"
+	"strconv"
 	"testing"
+	"vero"
 )
 
 func TestCrash(t *testing.T) {
-	crash := Crash("cadaaef371bc977aae209dc9be1a30665550adf89fa40fc17771051914d1f9fc", 6.66)
+	crash := Crash(vero.Hash(strconv.Itoa(rand.Int())), 6.66)
 	fmt.Println(crash / 100)
 }
