@@ -4,12 +4,11 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
-	"log"
 	"math"
 	"strconv"
 )
 
-func Crash(seed string, houseEdgePercent float64) float64 {
+func Crash(seed string, houseEdgePercent float64) (float64, error) {
 	// Cannot be a sha256 hash since that will be the previous seed
 	hmacHash := hmac.New(sha256.New, []byte(seed)).Sum(nil)
 	hash := hex.EncodeToString(hmacHash)
@@ -17,7 +16,7 @@ func Crash(seed string, houseEdgePercent float64) float64 {
 	// Use the most significant 52-bit from the hash to calculate the crash point
 	h, err := strconv.ParseInt(hash[:52/4], 16, 64)
 	if err != nil {
-		log.Fatal(err)
+		return 0, err
 	}
 	e := math.Pow(2, 52)
 
@@ -29,5 +28,5 @@ func Crash(seed string, houseEdgePercent float64) float64 {
 	houseEdgeModifier := 1 - houseEdgePercent/100
 	endResult := math.Max(100, result*houseEdgeModifier)
 
-	return math.Floor(endResult)
+	return math.Floor(endResult), nil
 }
