@@ -26,7 +26,7 @@ func TestCrash(t *testing.T) {
 		t.Run(fmt.Sprintf("%s", tt.seed), func(t *testing.T) {
 			value, err := Crash(tt.seed)
 			if err != nil {
-				t.Errorf("got %d", err)
+				t.Fatalf("got %v", err)
 			}
 			if value != tt.want.value {
 				t.Errorf("got %f, want %f", value, tt.want.value)

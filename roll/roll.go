@@ -4,7 +4,6 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
-	"log"
 	"math"
 	"strconv"
 	"strings"
@@ -35,17 +34,20 @@ var (
 	}
 )
 
-func Roll(serverSeed string, publicSeed string, nonce int) (string, float64) {
+func Roll(serverSeed string, publicSeed string, nonce int) (string, float64, error) {
 	game := "ROULETTE"
 	seed := getCombinedSeed(game, serverSeed, publicSeed, nonce)
 
-	rollValue := getRandomInt(Maximum, seed)
+	rollValue, err := getRandomInt(Maximum, seed)
+	if err != nil {
+		return "", 0, err
+	}
 	rollColor := getRollColor(int(rollValue), ColorMap, BaitMap)
 
-	return rollColor, rollValue
+	return rollColor, rollValue, nil
 }
 
-func getRandomInt(max int, seed string) float64 {
+func getRandomInt(max int, seed string) (float64, error) {
 	// Generate a hmac hash
 	hmacHash := hmac.New(sha256.New, []byte(seed)).Sum(nil)
 	hash := hex.EncodeToString(hmacHash)
@@ -54,14 +56,14 @@ func getRandomInt(max int, seed string) float64 {
 	subHash := hash[0:13]
 	valueFromHash, err := strconv.ParseInt(subHash, 16, 64)
 	if err != nil {
-		log.Fatal(err)
+		return 0, err
 	}
 
 	// Dynamic result for this roll
 	e := math.Pow(2, 52)
 	result := float64(valueFromHash) / e
 
-	return math.Floor(result * float64(max))
+	return math.Floor(result * float64(max)), nil
 }
 
 func getCombinedSeed(game string, serverSeed string, clientSeed string, nonce int) string {

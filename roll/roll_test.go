@@ -49,7 +49,10 @@ func TestRoll(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(fmt.Sprintf("%s,%s,%d", tt.serverSeed, tt.publicSeed, tt.nonce), func(t *testing.T) {
-			color, value := Roll(tt.serverSeed, tt.publicSeed, tt.nonce)
+			color, value, err := Roll(tt.serverSeed, tt.publicSeed, tt.nonce)
+			if err != nil {
+				t.Fatalf("got %v", err)
+			}
 			if color != tt.want.color {
 				t.Errorf("got %s, want %s", color, tt.want.color)
 			}
