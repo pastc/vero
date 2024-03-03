@@ -35,7 +35,7 @@ var (
 )
 
 func Roll(serverSeed string, publicSeed string, nonce int) (string, float64, error) {
-	game := "ROULETTE"
+	game := "ROLL"
 	seed := getCombinedSeed(game, serverSeed, publicSeed, nonce)
 
 	rollValue, err := getRandomInt(Maximum, seed)
@@ -79,7 +79,7 @@ func getCombinedSeed(game string, serverSeed string, clientSeed string, nonce in
 
 func getRollColor(rollValue int, colorMap map[int]string, baitMap map[int]string) string {
 	// May the odds be ever in your favor
-	color, _ := colorMap[rollValue]
+	color := colorMap[rollValue]
 	bait, found := baitMap[rollValue]
 	if found {
 		return color + "-" + bait
