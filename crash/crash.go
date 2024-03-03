@@ -8,7 +8,11 @@ import (
 	"strconv"
 )
 
-func Crash(seed string, houseEdgePercent float64) (float64, error) {
+var (
+	HouseEdge = 6.66
+)
+
+func Crash(seed string) (float64, error) {
 	// Cannot be a sha256 hash since that will be the previous seed
 	hmacHash := hmac.New(sha256.New, []byte(seed)).Sum(nil)
 	hash := hex.EncodeToString(hmacHash)
@@ -25,8 +29,8 @@ func Crash(seed string, houseEdgePercent float64) (float64, error) {
 
 	// The house always wins
 	// houseEdgePercent of 5 will result in modifier of 0.95 = 5% house edge with the lowest crash point of 100
-	houseEdgeModifier := 1 - houseEdgePercent/100
+	houseEdgeModifier := 1 - HouseEdge/100
 	endResult := math.Max(100, result*houseEdgeModifier)
 
-	return math.Floor(endResult), nil
+	return math.Floor(endResult) / 100, nil
 }
