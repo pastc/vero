@@ -35,7 +35,7 @@ var (
 	}
 )
 
-func Roll(publicSeed string, serverSeed string, nonce int) (string, float64) {
+func Roll(serverSeed string, publicSeed string, nonce int) (string, float64) {
 	game := "ROULETTE"
 	seed := getCombinedSeed(game, serverSeed, publicSeed, nonce)
 
