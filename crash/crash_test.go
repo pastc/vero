@@ -2,9 +2,9 @@ package crash
 
 import (
 	"fmt"
+	"github.com/pastc/vero"
 	"strconv"
 	"testing"
-	"vero"
 )
 
 func TestCrash(t *testing.T) {

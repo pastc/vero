@@ -2,9 +2,9 @@ package dice
 
 import (
 	"fmt"
+	"github.com/pastc/vero"
 	"strconv"
 	"testing"
-	"vero"
 )
 
 func TestDice(t *testing.T) {

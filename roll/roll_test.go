@@ -2,9 +2,9 @@ package roll
 
 import (
 	"fmt"
+	"github.com/pastc/vero"
 	"strconv"
 	"testing"
-	"vero"
 )
 
 func TestRoll(t *testing.T) {
