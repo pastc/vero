@@ -1,8 +1,8 @@
-package roll
+package vero
 
 import (
 	"fmt"
-	"github.com/pastc/vero"
+	"github.com/pastc/vero/internal"
 	"strconv"
 	"testing"
 )
@@ -68,7 +68,7 @@ func TestRoll(t *testing.T) {
 func FuzzRoll(f *testing.F) {
 	f.Add(0, 1, 0)
 	f.Fuzz(func(t *testing.T, serverSeedNum int, clientSeedNum int, nonce int) {
-		_, _, err := Roll(vero.Hash(strconv.Itoa(serverSeedNum)), vero.Hash(strconv.Itoa(clientSeedNum)), nonce)
+		_, _, err := Roll(internal.Hash(strconv.Itoa(serverSeedNum)), internal.Hash(strconv.Itoa(clientSeedNum)), nonce)
 		if err != nil {
 			t.Fatalf("got %v", err)
 		}

@@ -1,9 +1,7 @@
-package crash
+package vero
 
 import (
-	"crypto/hmac"
-	"crypto/sha256"
-	"encoding/hex"
+	"github.com/pastc/vero/internal"
 	"math"
 	"strconv"
 )
@@ -14,8 +12,7 @@ var (
 
 func Crash(seed string) (int, error) {
 	// Cannot be a sha256 hash since that will be the previous seed
-	hmacHash := hmac.New(sha256.New, []byte(seed)).Sum(nil)
-	hash := hex.EncodeToString(hmacHash)
+	hash := internal.Hmac(seed, "")
 
 	// Use the most significant 52-bit from the hash to calculate the crash point
 	h, err := strconv.ParseInt(hash[:52/4], 16, 64)

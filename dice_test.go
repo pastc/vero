@@ -1,8 +1,8 @@
-package dice
+package vero
 
 import (
 	"fmt"
-	"github.com/pastc/vero"
+	"github.com/pastc/vero/internal"
 	"strconv"
 	"testing"
 )
@@ -41,8 +41,8 @@ func TestDice(t *testing.T) {
 func FuzzDice(f *testing.F) {
 	f.Add(0, 1, 0, 0)
 	f.Fuzz(func(t *testing.T, serverSeedNum int, clientSeedNum int, nonce int, iteration int) {
-		serverSeed := vero.Hash(strconv.Itoa(serverSeedNum))
-		clientSeed := vero.Hash(strconv.Itoa(clientSeedNum))
+		serverSeed := internal.Hash(strconv.Itoa(serverSeedNum))
+		clientSeed := internal.Hash(strconv.Itoa(clientSeedNum))
 		_, err := Dice(serverSeed, clientSeed, nonce, iteration)
 		if err != nil {
 			t.Fatalf("got %v", err)

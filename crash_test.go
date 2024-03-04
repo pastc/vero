@@ -1,8 +1,8 @@
-package crash
+package vero
 
 import (
 	"fmt"
-	"github.com/pastc/vero"
+	"github.com/pastc/vero/internal"
 	"strconv"
 	"testing"
 )
@@ -40,7 +40,7 @@ func TestCrash(t *testing.T) {
 func FuzzCrash(f *testing.F) {
 	f.Fuzz(func(t *testing.T, seed int) {
 		f.Add(0)
-		_, err := Crash(vero.Hash(strconv.Itoa(seed)))
+		_, err := Crash(internal.Hash(strconv.Itoa(seed)))
 		if err != nil {
 			t.Fatalf("got %v", err)
 		}
