@@ -34,9 +34,9 @@ var (
 	}
 )
 
-func Roll(serverSeed string, publicSeed string, nonce int) (string, float64, error) {
+func Roll(serverSeed string, clientSeed string, nonce int) (string, float64, error) {
 	game := "ROLL"
-	seed := getCombinedSeed(game, serverSeed, publicSeed, nonce)
+	seed := getCombinedSeed(game, serverSeed, clientSeed, nonce)
 
 	rollValue, err := getRandomInt(Maximum, seed)
 	if err != nil {

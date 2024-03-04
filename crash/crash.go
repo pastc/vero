@@ -12,7 +12,7 @@ var (
 	HouseEdge = 6.66
 )
 
-func Crash(seed string) (float64, error) {
+func Crash(seed string) (int, error) {
 	// Cannot be a sha256 hash since that will be the previous seed
 	hmacHash := hmac.New(sha256.New, []byte(seed)).Sum(nil)
 	hash := hex.EncodeToString(hmacHash)
@@ -32,5 +32,5 @@ func Crash(seed string) (float64, error) {
 	houseEdgeModifier := 1 - HouseEdge/100
 	endResult := math.Max(100, result*houseEdgeModifier)
 
-	return math.Floor(endResult) / 100, nil
+	return int(math.Floor(endResult)), nil
 }

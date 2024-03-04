@@ -2,7 +2,9 @@ package roll
 
 import (
 	"fmt"
+	"strconv"
 	"testing"
+	"vero"
 )
 
 func TestRoll(t *testing.T) {
@@ -30,7 +32,7 @@ func TestRoll(t *testing.T) {
 	}
 
 	tests := []struct {
-		serverSeed, publicSeed string
+		serverSeed, clientSeed string
 		nonce                  int
 		want                   struct {
 			color string
@@ -48,8 +50,8 @@ func TestRoll(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		t.Run(fmt.Sprintf("%s,%s,%d", tt.serverSeed, tt.publicSeed, tt.nonce), func(t *testing.T) {
-			color, value, err := Roll(tt.serverSeed, tt.publicSeed, tt.nonce)
+		t.Run(fmt.Sprintf("%s,%s,%d", tt.serverSeed, tt.clientSeed, tt.nonce), func(t *testing.T) {
+			color, value, err := Roll(tt.serverSeed, tt.clientSeed, tt.nonce)
 			if err != nil {
 				t.Fatalf("got %v", err)
 			}
@@ -61,4 +63,14 @@ func TestRoll(t *testing.T) {
 			}
 		})
 	}
+}
+
+func FuzzRoll(f *testing.F) {
+	f.Add(0, 1, 0)
+	f.Fuzz(func(t *testing.T, serverSeedNum int, clientSeedNum int, nonce int) {
+		_, _, err := Roll(vero.Hash(strconv.Itoa(serverSeedNum)), vero.Hash(strconv.Itoa(clientSeedNum)), nonce)
+		if err != nil {
+			t.Fatalf("got %v", err)
+		}
+	})
 }

@@ -40,7 +40,7 @@ func TestDice(t *testing.T) {
 }
 
 func FuzzDice(f *testing.F) {
-	f.Add(1, 2, 0, 0)
+	f.Add(0, 1, 0, 0)
 	f.Fuzz(func(t *testing.T, serverSeedNum int, clientSeedNum int, nonce int, iteration int) {
 		serverSeed := vero.Hash(strconv.Itoa(serverSeedNum))
 		clientSeed := vero.Hash(strconv.Itoa(clientSeedNum))
