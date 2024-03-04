@@ -34,7 +34,6 @@ func TestDice(t *testing.T) {
 			if value != tt.want.value {
 				t.Errorf("got %f, want %f", value, tt.want.value)
 			}
-			fmt.Print(value)
 		})
 	}
 }
