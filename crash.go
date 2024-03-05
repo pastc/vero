@@ -7,15 +7,15 @@ import (
 )
 
 var (
-	HouseEdge = 6.66
+	HouseEdge = 6.66 // The house edge, i.e, how much the house gets on average.
 )
 
-func Crash(seed string) (int, error) {
+func Crash(serverSeed string) (int, error) {
 	// Cannot be a sha256 hash since that will be the previous seed
-	hash := internal.Hmac(seed, "")
+	hmac := internal.Hmac(serverSeed, "")
 
 	// Use the most significant 52-bit from the hash to calculate the crash point
-	h, err := strconv.ParseInt(hash[:52/4], 16, 64)
+	h, err := strconv.ParseInt(hmac[:52/4], 16, 64)
 	if err != nil {
 		return 0, err
 	}
