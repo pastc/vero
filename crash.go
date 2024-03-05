@@ -6,10 +6,10 @@ import (
 	"strconv"
 )
 
-var (
-	HouseEdge = 6.66 // The house edge, i.e, how much the house gets on average.
-)
+// HouseEdge i.e, percentage that the house gets
+var HouseEdge = 6.66
 
+// Crash generates a random number from 0 to lowest crash point that is calculated with the HouseEdge in mind.
 func Crash(serverSeed string) (int, error) {
 	// Cannot be a sha256 hash since that will be the previous seed
 	hmac := internal.Hmac(serverSeed, "")

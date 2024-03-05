@@ -5,6 +5,7 @@ import (
 	"math"
 )
 
+// Dice generates a random float from 0 to 100.00
 func Dice(serverSeed string, clientSeed string, nonce int, iteration int) (float64, error) {
 	game := "DICE"
 	seed := internal.GetCombinedSeed(game, serverSeed, clientSeed, nonce, iteration)
@@ -31,5 +32,5 @@ func Dice(serverSeed string, clientSeed string, nonce int, iteration int) (float
 
 	luckyNumber := math.Mod(float64(lucky), math.Floor(math.Pow(10, 4)))
 
-	return luckyNumber, nil
+	return luckyNumber / 100, nil
 }
