@@ -2,6 +2,7 @@ package vero
 
 import (
 	"github.com/pastc/vero/internal"
+	"strconv"
 )
 
 // Maximum is the maximum value that can be rolled
@@ -33,11 +34,13 @@ var BaitMap = map[int]string{
 }
 
 // Roll generates a random number from 0 to Maximum and returns the color and bait from ColorMap and BaitMap respectively.
-func Roll(serverSeed string, clientSeed string, nonce int) (string, float64, error) {
+func Roll(serverSeed string, publicSeed string, nonce int) (string, float64, error) {
 	game := "ROLL"
-	seed := internal.GetCombinedSeed(game, serverSeed, clientSeed, nonce, -1)
+	seed := internal.GetCombinedSeed(game, publicSeed, strconv.Itoa(nonce))
 
-	rollValue, err := internal.GetRandomInt(Maximum, seed)
+	hash := internal.Hmac(serverSeed, seed)
+
+	rollValue, err := internal.GetRandomInt(Maximum, hash)
 	if err != nil {
 		return "", 0, err
 	}

@@ -11,8 +11,10 @@ var HouseEdge = 6.66
 
 // Crash generates a random number from 0 to lowest crash point that is calculated with the HouseEdge in mind.
 func Crash(serverSeed string) (int, error) {
-	// Cannot be a sha256 hash since that will be the previous seed
-	hmac := internal.Hmac(serverSeed, "")
+	game := "CRASH"
+	seed := internal.GetCombinedSeed(game)
+
+	hmac := internal.Hmac(serverSeed, seed)
 
 	// Use the most significant 52-bit from the hash to calculate the crash point
 	h, err := strconv.ParseInt(hmac[:52/4], 16, 64)

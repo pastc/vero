@@ -18,10 +18,10 @@ func TestCrash(t *testing.T) {
 	}{
 		{"2826d440b0fcad643e3008693c3a93ef81b31675ca00d686e44c40d5e83d7bb6", struct {
 			value int
-		}{211}},
+		}{126}},
 		{"5b60f37f764fcb9700d202d6caf3a0cf1d5e67020b0ce1f6570d16f34150cc71", struct {
 			value int
-		}{127}},
+		}{288}},
 	}
 
 	for _, tt := range tests {

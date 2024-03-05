@@ -14,15 +14,15 @@ func TestDice(t *testing.T) {
 		nonce      int
 		iteration  int
 		want       struct {
-			value float64
+			value int
 		}
 	}{
 		{"1c5cff3922c8dc1fc9188b3cc2805acdafb6b3a51f51860b59f98eb1753c170d", "5b60f37f764fdb9700d202d6caf3a0cf1d5e67020b0ce1f6570d16f34150cc71", 1, 0, struct {
-			value float64
-		}{84.24}},
+			value int
+		}{258}},
 		{"737bef126f149cdc10b40b29c2fcbbc3aae465fa506b171cba91661560a7a1fc", "868af726a9b00af3771c32b25db86ec7a281f721c150ff04a4adf97a059b40c5", 1, 0, struct {
-			value float64
-		}{52.73}},
+			value int
+		}{2113}},
 	}
 
 	for _, tt := range tests {
@@ -32,7 +32,7 @@ func TestDice(t *testing.T) {
 				t.Fatalf("got %v", err)
 			}
 			if value != tt.want.value {
-				t.Errorf("got %f, want %f", value, tt.want.value)
+				t.Errorf("got %d, want %d", value, tt.want.value)
 			}
 		})
 	}

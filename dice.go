@@ -3,12 +3,13 @@ package vero
 import (
 	"github.com/pastc/vero/internal"
 	"math"
+	"strconv"
 )
 
-// Dice generates a random float from 0 to 100.00
-func Dice(serverSeed string, clientSeed string, nonce int, iteration int) (float64, error) {
+// Dice generates a random float from 0 to 9999
+func Dice(serverSeed string, clientSeed string, nonce int, iteration int) (int, error) {
 	game := "DICE"
-	seed := internal.GetCombinedSeed(game, serverSeed, clientSeed, nonce, iteration)
+	seed := internal.GetCombinedSeed(game, clientSeed, strconv.Itoa(nonce))
 
 	hash := internal.Hmac(serverSeed, seed)
 
@@ -30,7 +31,7 @@ func Dice(serverSeed string, clientSeed string, nonce int, iteration int) (float
 		}
 	}
 
-	luckyNumber := math.Mod(float64(lucky), math.Floor(math.Pow(10, 4)))
+	luckyNumber := math.Mod(float64(lucky), math.Pow(10, 4))
 
-	return luckyNumber / 100, nil
+	return int(luckyNumber), nil
 }

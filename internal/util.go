@@ -9,17 +9,7 @@ import (
 	"strings"
 )
 
-func GetCombinedSeed(game string, serverSeed string, clientSeed string, nonce int, iteration int) string {
-	seedParameters := []string{serverSeed, clientSeed, strconv.Itoa(nonce)}
-	if iteration != -1 {
-		seedParameters = append(seedParameters, strconv.Itoa(iteration))
-	}
-	if game != "" {
-		seedParameters = append(seedParameters, "")
-		copy(seedParameters[1:], seedParameters)
-		seedParameters[0] = game
-	}
-
+func GetCombinedSeed(seedParameters ...string) string {
 	return strings.Join(seedParameters, "-")
 }
 
@@ -29,10 +19,7 @@ func GetLucky(hash string, index int) (int, error) {
 	return int(luckyNumber), err
 }
 
-func GetRandomInt(max int, seed string) (float64, error) {
-	// Generate a hmac hash
-	hash := Hmac(seed, "")
-
+func GetRandomInt(max int, hash string) (float64, error) {
 	// Value from hash
 	subHash := hash[0:13]
 	valueFromHash, err := strconv.ParseInt(subHash, 16, 64)
