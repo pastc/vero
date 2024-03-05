@@ -54,9 +54,7 @@ func Hash(s string) string {
 
 func Hmac(key string, s string) string {
 	hmacHash := hmac.New(sha256.New, []byte(key))
-	if s != "" {
-		hmacHash.Write([]byte(s))
-	}
+	hmacHash.Write([]byte(s))
 	hash := hex.EncodeToString(hmacHash.Sum(nil))
 	return hash
 }
