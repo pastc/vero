@@ -3,13 +3,13 @@ The vero package generates random numbers for online casinos games such as dice,
 
 All the algorithms are provably fair.
 
-###### Install
+### Install
 
 ```shell
 go get github.com/pastc/vero
 ```
 
-###### Documentation
+### Documentation
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/pastc/vero.svg)](https://pkg.go.dev/github.com/pastc/vero)
 
