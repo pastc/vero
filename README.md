@@ -12,6 +12,15 @@ All the algorithms are provably fair.
 go get github.com/pastc/vero
 ```
 
+## Feature
+
+- Provably fair
+- Many games:
+    - Crash
+    - Dice
+    - Roll
+    - Plinko
+
 ## Guide
 
 ### Crash
@@ -38,14 +47,14 @@ if err != nil {
 
 ###### Explanation
 
-The server should first generate a chain of 10 million SHA256 hashes, starting with a server secret that has been
-repeatedly fed the output of SHA256 back into itself 10 million times. Then, the crash game is played through this chain
+The server should first generate a chain of 10 million SHA512 hashes, starting with a server secret that has been
+repeatedly fed the output of SHA512 back into itself 10 million times. Then, the crash game is played through this chain
 of hashes in reverse order, using the values as source data for generating each game's outcome.
 
 Anyone can easily verify the integrity of the whole chain as the server should publish the hash used to calculate the
 outcome after each game ends.
 
-If you apply the SHA256 function to a revealed seed, you'll get the hash for the previously played game, and so on until
+If you apply the SHA512 function to a revealed seed, you'll get the hash for the previously played game, and so on until
 you get the hash for the first ever played game round on the chain.
 
 Though, for security reasons, it would not be safe to keep using the same hash chain for a lot of games (> 1 million) in
@@ -83,7 +92,7 @@ if err != nil {
 The server seed is generated first before you specify your client seed. Both seeds together prevent manipulation from
 the server and verifies the roll integrity after the result calculation. Every roll has a unique server seed randomly
 generated in advance, this server seed will only be updated when you choose to update your client seed. The server
-hashes the server seed with the SHA256 cryptographic function and then publishes the hashed server seeds for the player
+hashes the server seed with the SHA512 cryptographic function and then publishes the hashed server seeds for the player
 to see.
 
 Due to this applied hashing function, the player can verify the integrity of the roll by updating your client seed to
@@ -91,11 +100,20 @@ get the server seed of the player, which they then can apply the function to get
 edited freely by users before each roll.
 
 As the client seed affects every roll result, changing it to any seed of your choice at any time means you can ensure
-that it's impossible for the server to manipulate the result. However, the SHA512 function we use to generate the roll
+that it's impossible for the server to manipulate the result. However, the SHA512 function the server uses to generate
+the roll
 is deterministic, if the client seed is combined with the same server seed, it will generate exactly the same roll
-result every time. This could be used to abuse the system, so we use something called a 'nonce' which prevents this from
+result every time. This could be used to abuse the system, so the server uses something called a 'nonce' which prevents
+this from
 being abusable. Each roll done using the same server seed & client seed pair will also be paired with a different nonce,
 which is simply a number starting at 0 and incremented by 1 for each roll done.
+
+Lastly, for each roll the server generates, it applies an iteration count, starting at 0. The reason for this fourth
+variable in the seed is just in case the randomly generated value goes out of bounds and eventually exhausts all
+available random numbers within the available hash. In this case, we will generate a new hash using the exact same seed
+pair as before, while simply incrementing this iteration value by 1. In this sense, it works in very much the same way
+as the nonce. We do not have any control over which iteration value is used to generate the final result as it is all
+algorithmically pre-determined.
 
 ### Roll
 
@@ -107,27 +125,27 @@ var Maximum = 15
 
 // ColorMap is colors mapped to values
 var ColorMap = map[int]string{
-0:  "Green",
-1:  "Red",
-2:  "Red",
-3:  "Red",
-4:  "Red",
-5:  "Red",
-6:  "Red",
-7:  "Red",
-8:  "Black",
-9:  "Black",
-10: "Black",
-11: "Black",
-12: "Black",
-13: "Black",
-14: "Black",
+  0:  "Green",
+  1:  "Red",
+  2:  "Red",
+  3:  "Red",
+  4:  "Red",
+  5:  "Red",
+  6:  "Red",
+  7:  "Red",
+  8:  "Black",
+  9:  "Black",
+  10: "Black",
+  11: "Black",
+  12: "Black",
+  13: "Black",
+  14: "Black",
 }
 
 // BaitMap is baits mapped to values
 var BaitMap = map[int]string{
-4:  "Bait",
-11: "Bait",
+  4:  "Bait",
+  11: "Bait",
 }
 ```
 
@@ -138,7 +156,7 @@ serverSeed := "1c5cff3922c8dc1fc9188b3cc2805acdafb6b3a51f51860b59f98eb1753c170d"
 clientSeed := "1c064b20e2ed52a5c4db0361a2523e8901db2342f95bd0dd1d9a68a46b8cc483"
 nonce := 5345510
 
-color, value, err := vero.Dice(serverSeed, clientSeed, nonce, 0)
+color, value, err := vero.Dice(serverSeed, clientSeed, nonce)
 if err != nil {
   log.Fatal(err)
 }
