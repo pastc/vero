@@ -177,16 +177,16 @@ None
 ###### Example
 
 ```go
-serverSeed := "1c5cff3922c8dc1fc9188b3cc2805acdafb6b3a51f51860b59f98eb1753c170d"
-clientSeed := "5b60f37f764fdb9700d202d6caf3a0cf1d5e67020b0ce1f6570d16f34150cc71"
+serverSeed := "62476aade71d19f24f145306f5755fca07498ce90823b223db734568e4665dedce7fd8d33a6fdcdbd1a5e9a8d2bcfce53ef757048fac6a987d55fc064bdcd0b8"
+clientSeed := "8b13c8014a7704bbccec153354259eba7f8cdfab47caf51e6701e60727f5500f75e9f506fc61c3e6f5063775c17c70b5af476000fadf04ca44399ef465be352a"
 nonce := 493587
 
-value, err := vero.Plinko(serverSeed, clientSeed, nonce, 0)
+value, percentage, err := vero.Plinko(serverSeed, clientSeed, nonce, 0, 16)
 if err != nil {
   log.Fatal(err)
 }
 
-// value should be -1 (left)
+// value, percentage should be 9, 17.456054
 ```
 
 ###### Explanation

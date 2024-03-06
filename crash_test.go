@@ -16,12 +16,12 @@ func TestCrash(t *testing.T) {
 			value int
 		}
 	}{
-		{"2826d440b0fcad643e3008693c3a93ef81b31675ca00d686e44c40d5e83d7bb6", struct {
+		{"62472aade71d19f24f145306f5755fca07498ce90823b223db734568e4665dedce7fd8d33a6fdcdbd1a5e9a8d2bcfce53ef757048fac6a987d55fc064bdcd0b8", struct {
 			value int
-		}{560}},
-		{"5b60f37f764fcb9700d202d6caf3a0cf1d5e67020b0ce1f6570d16f34150cc71", struct {
+		}{205}},
+		{"8b13c8014a7704bbccec153354259eba7f8cdfab47caf51e6701e60727f5500f75e9f506fc61c3e6f5063775c17c70b5af476000fadf04ca44399ef465be352a", struct {
 			value int
-		}{234}},
+		}{2203}},
 	}
 
 	for _, tt := range tests {
