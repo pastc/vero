@@ -40,8 +40,8 @@ func TestDice(t *testing.T) {
 func FuzzDice(f *testing.F) {
 	f.Add(0, 1, 0, 0)
 	f.Fuzz(func(t *testing.T, serverSeedNum int, clientSeedNum int, nonce int, iteration int) {
-		serverSeed := internal.Hash256(strconv.Itoa(serverSeedNum))
-		clientSeed := internal.Hash256(strconv.Itoa(clientSeedNum))
+		serverSeed := internal.Hash512(strconv.Itoa(serverSeedNum))
+		clientSeed := internal.Hash512(strconv.Itoa(clientSeedNum))
 		_, err := Dice(serverSeed, clientSeed, nonce, iteration)
 		if err != nil {
 			t.Fatalf("got %v", err)

@@ -18,10 +18,10 @@ func TestCrash(t *testing.T) {
 	}{
 		{"2826d440b0fcad643e3008693c3a93ef81b31675ca00d686e44c40d5e83d7bb6", struct {
 			value int
-		}{126}},
+		}{560}},
 		{"5b60f37f764fcb9700d202d6caf3a0cf1d5e67020b0ce1f6570d16f34150cc71", struct {
 			value int
-		}{288}},
+		}{234}},
 	}
 
 	for _, tt := range tests {
@@ -40,7 +40,7 @@ func TestCrash(t *testing.T) {
 func FuzzCrash(f *testing.F) {
 	f.Add(0)
 	f.Fuzz(func(t *testing.T, seed int) {
-		_, err := Crash(internal.Hash256(strconv.Itoa(seed)))
+		_, err := Crash(internal.Hash512(strconv.Itoa(seed)))
 		if err != nil {
 			t.Fatalf("got %v", err)
 		}

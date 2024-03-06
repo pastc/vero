@@ -14,7 +14,7 @@ func Crash(serverSeed string) (int, error) {
 	game := "CRASH"
 	seed := internal.GetCombinedSeed(game)
 
-	hmac := internal.Hmac256(serverSeed, seed)
+	hmac := internal.Hmac512(serverSeed, seed)
 
 	// Use the most significant 52-bit from the hash to calculate the crash point
 	h, err := strconv.ParseInt(hmac[:52/4], 16, 64)
