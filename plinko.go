@@ -6,6 +6,7 @@ import (
 	"strconv"
 )
 
+// Plinko generates a number with a 1/2 chance between -1 and 1 where -1 is left and 1 is right.
 func Plinko(serverSeed string, clientSeed string, nonce int, iteration int) (int, error) {
 	game := "PLINKO"
 	seed := internal.GetCombinedSeed(game, clientSeed, strconv.Itoa(nonce), strconv.Itoa(iteration))
