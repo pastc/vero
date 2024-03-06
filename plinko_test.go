@@ -9,18 +9,17 @@ import (
 
 func TestPlinko(t *testing.T) {
 	tests := []struct {
-		serverSeed string
-		clientSeed string
-		nonce      int
-		iteration  int
-		want       struct {
+		serverSeed, clientSeed string
+		nonce                  int
+		iteration              int
+		want                   struct {
 			value int
 		}
 	}{
-		{"1c5cff3922c8dc1fc9188b3cc2805acdafb6b3a51f51860b59f98eb1753c170d", "5b60f37f764fdb9700d202d6caf3a0cf1d5e67020b0ce1f6570d16f34150cc71", 1, 0, struct {
+		{"1c5cff3922c8dc1fc9188b3cc2805acdafb6b3a51f51860b59f98eb1753c170d", "5b60f37f764fdb9700d202d6caf3a0cf1d5e67020b0ce1f6570d16f34150cc71", 493587, 0, struct {
 			value int
 		}{-1}},
-		{"737bef126f149cdc10b40b2922fcbbc3aae465fa506b171cba91661560a7a1fc", "868af726a9b00af3771c32b25db86ec7a281f721c150ff04a4adf97a059b40c5", 1, 0, struct {
+		{"737bef126f149cdc10b40b2922fcbbc3aae465fa506b171cba91661560a7a1fc", "868af726a9b00af3771c32b25db86ec7a281f721c150ff04a4adf97a059b40c5", 364597, 0, struct {
 			value int
 		}{1}},
 	}
