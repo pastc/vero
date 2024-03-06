@@ -6,35 +6,44 @@ import (
 	"strconv"
 )
 
-// Plinko generates a number with a 1/2 chance between -1 and 1 where -1 is left and 1 is right.
-func Plinko(serverSeed string, clientSeed string, nonce int, iteration int) (int, error) {
+// Plinko generates a list of coordinates that the ball went through
+func Plinko(serverSeed string, clientSeed string, nonce int, iteration int, rows int) (int, float64, error) {
 	game := "PLINKO"
-	seed := internal.GetCombinedSeed(game, clientSeed, strconv.Itoa(nonce), strconv.Itoa(iteration))
 
-	hash := internal.Hmac512(serverSeed, seed)
+	var coordinate int
 
-	index := 0
-	lucky, err := internal.GetLucky(hash, index)
-	if err != nil {
-		return 0, err
-	}
+	// repeat it the number of rows (n)
+	for i := range rows {
+		seed := internal.GetCombinedSeed(game, clientSeed, strconv.Itoa(nonce), strconv.Itoa(iteration), strconv.Itoa(i))
 
-	for float64(lucky) >= math.Pow(10, 6) {
-		index++
-		lucky, err = internal.GetLucky(hash, index)
+		hash := internal.Hmac512(serverSeed, seed)
+
+		index := 0
+		lucky, err := internal.GetLucky(hash, index)
 		if err != nil {
-			return 0, err
+			return 0, 0, err
 		}
 
-		if (index*5)+5 > 128 {
-			return Plinko(serverSeed, clientSeed, nonce, iteration+1)
+		for float64(lucky) >= math.Pow(10, 6) {
+			index++
+			lucky, err = internal.GetLucky(hash, index)
+			if err != nil {
+				return 0, 0, err
+			}
+
+			if (index*5)+5 > 128 {
+				return Plinko(serverSeed, clientSeed, nonce, iteration+1, rows)
+			}
+		}
+
+		luckyNumber := int(math.Floor(math.Mod(float64(lucky), math.Pow(10, 4))))
+		if luckyNumber < 5000 {
+			coordinate -= 1
+		} else {
+			coordinate += 1
 		}
 	}
 
-	luckyNumber := int(math.Floor(math.Mod(float64(lucky), math.Pow(10, 4))))
-	if luckyNumber < 5000 {
-		return -1, nil
-	} else {
-		return 1, nil
-	}
+	return (rows + coordinate) / 2, math.Trunc(internal.BinomialDistribution(rows, (rows+coordinate)/2)*math.Pow(10,
+		6)) / math.Pow(10, 6), nil
 }
