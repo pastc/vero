@@ -38,8 +38,8 @@ func TestCrash(t *testing.T) {
 }
 
 func FuzzCrash(f *testing.F) {
+	f.Add(0)
 	f.Fuzz(func(t *testing.T, seed int) {
-		f.Add(0)
 		_, err := Crash(internal.Hash256(strconv.Itoa(seed)))
 		if err != nil {
 			t.Fatalf("got %v", err)
