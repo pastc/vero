@@ -2,6 +2,7 @@ package vero
 
 import (
 	"github.com/pastc/vero/internal"
+	"math"
 	"strconv"
 )
 
@@ -34,7 +35,7 @@ var BaitMap = map[int]string{
 }
 
 // Roll generates a random number from 0 to Maximum and returns the color and bait from ColorMap and BaitMap respectively.
-func Roll(serverSeed string, publicSeed string, nonce int) (string, float64, error) {
+func Roll(serverSeed string, publicSeed string, nonce int) (string, int, error) {
 	game := "ROLL"
 	seed := internal.GetCombinedSeed(game, publicSeed, strconv.Itoa(nonce))
 
@@ -46,5 +47,5 @@ func Roll(serverSeed string, publicSeed string, nonce int) (string, float64, err
 	}
 	rollColor := internal.GetRollColor(int(rollValue), ColorMap, BaitMap)
 
-	return rollColor, rollValue, nil
+	return rollColor, int(math.Floor(rollValue)), nil
 }

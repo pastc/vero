@@ -8,7 +8,7 @@ import (
 
 func Plinko(serverSeed string, clientSeed string, nonce int, iteration int) (int, error) {
 	game := "PLINKO"
-	seed := internal.GetCombinedSeed(game, clientSeed, strconv.Itoa(nonce))
+	seed := internal.GetCombinedSeed(game, clientSeed, strconv.Itoa(nonce), strconv.Itoa(iteration))
 
 	hash := internal.Hmac512(serverSeed, seed)
 

@@ -58,7 +58,7 @@ func TestRoll(t *testing.T) {
 			if color != tt.want.color {
 				t.Errorf("got %s, want %s", color, tt.want.color)
 			}
-			if int(value) != tt.want.value {
+			if value != tt.want.value {
 				t.Errorf("got %d, want %d", int(value), tt.want.value)
 			}
 		})

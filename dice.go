@@ -9,7 +9,7 @@ import (
 // Dice generates a random float from 0 to 9999
 func Dice(serverSeed string, clientSeed string, nonce int, iteration int) (int, error) {
 	game := "DICE"
-	seed := internal.GetCombinedSeed(game, clientSeed, strconv.Itoa(nonce))
+	seed := internal.GetCombinedSeed(game, clientSeed, strconv.Itoa(nonce), strconv.Itoa(iteration))
 
 	hash := internal.Hmac512(serverSeed, seed)
 
