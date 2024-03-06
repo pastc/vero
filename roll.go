@@ -38,7 +38,7 @@ func Roll(serverSeed string, publicSeed string, nonce int) (string, float64, err
 	game := "ROLL"
 	seed := internal.GetCombinedSeed(game, publicSeed, strconv.Itoa(nonce))
 
-	hash := internal.Hmac(serverSeed, seed)
+	hash := internal.Hmac256(serverSeed, seed)
 
 	rollValue, err := internal.GetRandomInt(Maximum, hash)
 	if err != nil {

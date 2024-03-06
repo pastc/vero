@@ -68,7 +68,7 @@ func TestRoll(t *testing.T) {
 func FuzzRoll(f *testing.F) {
 	f.Add(0, 1, 0)
 	f.Fuzz(func(t *testing.T, serverSeedNum int, clientSeedNum int, nonce int) {
-		_, _, err := Roll(internal.Hash(strconv.Itoa(serverSeedNum)), internal.Hash(strconv.Itoa(clientSeedNum)), nonce)
+		_, _, err := Roll(internal.Hash256(strconv.Itoa(serverSeedNum)), internal.Hash256(strconv.Itoa(clientSeedNum)), nonce)
 		if err != nil {
 			t.Fatalf("got %v", err)
 		}
