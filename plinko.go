@@ -7,7 +7,7 @@ import (
 )
 
 // Plinko generates a list of coordinates that the ball went through
-func Plinko(serverSeed string, clientSeed string, nonce int, iteration int, rows int) (int, float64, error) {
+func Plinko(serverSeed string, clientSeed string, nonce int, iteration int, rows int) (int, error) {
 	game := "PLINKO"
 
 	var coordinate int
@@ -21,14 +21,14 @@ func Plinko(serverSeed string, clientSeed string, nonce int, iteration int, rows
 		index := 0
 		lucky, err := internal.GetLucky(hash, index)
 		if err != nil {
-			return 0, 0, err
+			return 0, err
 		}
 
 		for float64(lucky) >= math.Pow(10, 6) {
 			index++
 			lucky, err = internal.GetLucky(hash, index)
 			if err != nil {
-				return 0, 0, err
+				return 0, err
 			}
 
 			if (index*5)+5 > 128 {
@@ -44,6 +44,6 @@ func Plinko(serverSeed string, clientSeed string, nonce int, iteration int, rows
 		}
 	}
 
-	return (rows + coordinate) / 2, math.Trunc(internal.BinomialDistribution(rows, (rows+coordinate)/2)*math.Pow(10,
-		6)) / math.Pow(10, 6), nil
+	// probability math.Trunc(internal.BinomialDistribution(rows, (rows+coordinate)/2)*math.Pow(10, 6)) / math.Pow(10, 6)
+	return (rows + coordinate) / 2, nil
 }

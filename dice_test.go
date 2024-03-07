@@ -19,11 +19,13 @@ func TestDice(t *testing.T) {
 		{"964cd1665174434d3b82b0a7e9dd5b8bbbc58056a4c3d411d89afcdc2141fa81",
 			"20244eaefdc61956bde0c835b0698d8bf5eeddaa7a27e9fae53db5da5a3a0967", 32139, 0, struct {
 				value int
-			}{3750}},
+			}{3750},
+		},
 		{"ad0111b329b54e2947d1ee14c7b40242019bae11114775932b7865c227636a3a",
 			"2cf0c2cb4476cdf70ce68a42bc86b17814dafead8a8c30c128d203dc7270816f", 43289, 0, struct {
 				value int
-			}{3561}},
+			}{3561},
+		},
 	}
 
 	for _, tt := range tests {

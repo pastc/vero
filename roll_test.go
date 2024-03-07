@@ -43,12 +43,14 @@ func TestRoll(t *testing.T) {
 			"20244eaefdc61956bde0c835b0698d8bf5eeddaa7a27e9fae53db5da5a3a0967", 5345510, struct {
 				color string
 				value int
-			}{"Black", 14}},
+			}{"Black", 14},
+		},
 		{"ad0111b329b54e2947d1ee14c7b40242019bae11114775932b7865c227636a3a",
 			"2cf0c2cb4476cdf70ce68a42bc86b17814dafead8a8c30c128d203dc7270816f", 5327980, struct {
 				color string
 				value int
-			}{"Black", 10}},
+			}{"Black", 10},
+		},
 	}
 
 	for _, tt := range tests {
