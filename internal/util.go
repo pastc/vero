@@ -2,7 +2,7 @@ package internal
 
 import (
 	"crypto/hmac"
-	"crypto/sha512"
+	"crypto/sha256"
 	"encoding/hex"
 	"math"
 	"strconv"
@@ -45,30 +45,30 @@ func GetRollColor(rollValue int, colorMap map[int]string, baitMap map[int]string
 	}
 }
 
-//func Hash256(s string) string {
-//	h := sha256.New()
-//	h.Write([]byte(s))
-//	b := h.Sum(nil)
-//	return string(b)
-//}
-
-func Hash512(s string) string {
-	h := sha512.New()
+func Hash256(s string) string {
+	h := sha256.New()
 	h.Write([]byte(s))
 	b := h.Sum(nil)
 	return string(b)
 }
 
-//func Hmac256(key string, s string) string {
-//	hmacHash := hmac.New(sha256.New, []byte(key))
-//	hmacHash.Write([]byte(s))
-//	hash := hex.EncodeToString(hmacHash.Sum(nil))
-//	return hash
+//func Hash512(s string) string {
+//	h := sha512.New()
+//	h.Write([]byte(s))
+//	b := h.Sum(nil)
+//	return string(b)
 //}
 
-func Hmac512(key string, s string) string {
-	hmacHash := hmac.New(sha512.New, []byte(key))
+func Hmac256(key string, s string) string {
+	hmacHash := hmac.New(sha256.New, []byte(key))
 	hmacHash.Write([]byte(s))
 	hash := hex.EncodeToString(hmacHash.Sum(nil))
 	return hash
 }
+
+//func Hmac512(key string, s string) string {
+//	hmacHash := hmac.New(sha512.New, []byte(key))
+//	hmacHash.Write([]byte(s))
+//	hash := hex.EncodeToString(hmacHash.Sum(nil))
+//	return hash
+//}

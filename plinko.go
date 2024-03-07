@@ -16,7 +16,7 @@ func Plinko(serverSeed string, clientSeed string, nonce int, iteration int, rows
 	for i := range rows {
 		seed := internal.GetCombinedSeed(game, clientSeed, strconv.Itoa(nonce), strconv.Itoa(iteration), strconv.Itoa(i))
 
-		hash := internal.Hmac512(serverSeed, seed)
+		hash := internal.Hmac256(serverSeed, seed)
 
 		index := 0
 		lucky, err := internal.GetLucky(hash, index)
