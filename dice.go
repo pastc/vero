@@ -11,7 +11,7 @@ func Dice(serverSeed string, clientSeed string, nonce int, iteration int) (int, 
 	game := "DICE"
 	seed := internal.GetCombinedSeed(game, clientSeed, strconv.Itoa(nonce), strconv.Itoa(iteration))
 
-	hash := internal.Hmac256(serverSeed, seed)
+	hash := internal.Hmac512(serverSeed, seed)
 
 	index := 0
 	lucky, err := internal.GetLucky(hash, index)
