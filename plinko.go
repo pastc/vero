@@ -6,7 +6,12 @@ import (
 	"strconv"
 )
 
-// Plinko generates a list of coordinates that the ball went through
+// Plinko generates the column number that the ball ended on
+//
+//	   0
+//	  0 1
+//	 0 1 2
+//	0 1 2 3
 func Plinko(serverSeed string, clientSeed string, nonce int, iteration int, rows int) (int, error) {
 	game := "PLINKO"
 
