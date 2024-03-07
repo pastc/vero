@@ -7,7 +7,7 @@ import (
 )
 
 // Dice generates a random float from 0 to 9999
-func Dice(serverSeed string, clientSeed string, nonce int, iteration int) (int, error) {
+func Dice(serverSeed string, clientSeed string, nonce int, iteration int) (float64, error) {
 	game := "DICE"
 	seed := internal.GetCombinedSeed(game, clientSeed, strconv.Itoa(nonce), strconv.Itoa(iteration))
 
@@ -33,5 +33,5 @@ func Dice(serverSeed string, clientSeed string, nonce int, iteration int) (int, 
 
 	luckyNumber := math.Mod(float64(lucky), math.Pow(10, 4))
 
-	return int(luckyNumber), nil
+	return luckyNumber / 100, nil
 }
