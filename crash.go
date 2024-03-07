@@ -7,10 +7,9 @@ import (
 )
 
 // HouseEdge i.e, percentage that the house gets
-var HouseEdge = 6.66
 
 // Crash generates a random number from 0 to lowest crash point that is calculated with the HouseEdge in mind.
-func Crash(serverSeed string) (int, error) {
+func Crash(serverSeed string, houseEdge float64) (int, error) {
 	game := "CRASH"
 	seed := internal.GetCombinedSeed(game)
 
@@ -28,7 +27,7 @@ func Crash(serverSeed string) (int, error) {
 
 	// The house always wins
 	// houseEdgePercent of 5 will result in modifier of 0.95 = 5% house edge with the lowest crash point of 100
-	houseEdgeModifier := 1 - HouseEdge/100
+	houseEdgeModifier := 1 - houseEdge/100
 	endResult := math.Max(100, result*houseEdgeModifier)
 
 	return int(math.Floor(endResult)), nil

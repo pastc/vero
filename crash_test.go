@@ -8,11 +8,11 @@ import (
 )
 
 func TestCrash(t *testing.T) {
-	HouseEdge = 6.66
+	houseEdge := 6.66
 
 	tests := []struct {
-		seed string
-		want struct {
+		serverSeed string
+		want       struct {
 			value int
 		}
 	}{
@@ -25,8 +25,8 @@ func TestCrash(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		t.Run(fmt.Sprintf("%s", tt.seed), func(t *testing.T) {
-			value, err := Crash(tt.seed)
+		t.Run(fmt.Sprintf("%s", tt.serverSeed), func(t *testing.T) {
+			value, err := Crash(tt.serverSeed, houseEdge)
 			if err != nil {
 				t.Fatalf("got %v", err)
 			}
@@ -38,9 +38,10 @@ func TestCrash(t *testing.T) {
 }
 
 func FuzzCrash(f *testing.F) {
+	houseEdge := 6.66
 	f.Add(0)
 	f.Fuzz(func(t *testing.T, seed int) {
-		_, err := Crash(internal.Hash256(strconv.Itoa(seed)))
+		_, err := Crash(internal.Hash256(strconv.Itoa(seed)), houseEdge)
 		if err != nil {
 			t.Fatalf("got %v", err)
 		}
