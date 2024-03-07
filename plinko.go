@@ -6,7 +6,7 @@ import (
 	"strconv"
 )
 
-// Plinko generates the column number that the ball ended on
+// Plinko generates the column number that the ball landed on
 //
 //	   0
 //	  0 1
