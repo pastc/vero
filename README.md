@@ -191,10 +191,6 @@ var clientSeed string
 var nonce int
 var iteration int
 // rows represents the number of rows in the triangle.
-// 0	   0
-// 1	  0 1
-// 2	 0 1 2
-// 3	0 1 2 3
 var rows int
 ```
 
@@ -202,10 +198,6 @@ var rows int
 
 ```go
 // column represents the index of the column that the ball dropped into.
-//    0
-//   0 1
-//  0 1 2
-// 0 1 2 3
 column, err := vero.Plinko(serverSeed, clientSeed, nonce, iteration, rows)
 if err != nil {
   log.Fatal(err)
@@ -215,6 +207,8 @@ if err != nil {
 #### Explanation
 
 ```
+Think of it as a Pascal's triangle.
+
 0      0
 1     0 1
 2    0 1 2
