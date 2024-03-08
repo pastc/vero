@@ -17,10 +17,10 @@ go get github.com/pastc/vero
 - No third-party dependencies
 - Provably fair
 - Many games:
-    - Crash
-    - Dice
-    - Roll
-    - Plinko
+  - Crash
+  - Dice
+  - Roll
+  - Plinko
 
 ## Guide
 
@@ -119,9 +119,10 @@ if err != nil {
    any error that may have occurred during the conversion.
 
 3. The for loop ensures that the `lucky` integer is above 10^6 (1000000) since it will be divided by 10^4 (10000) later.
-   If it is under 10^6, then the `index` is incremented by 1 and the `GetLucky` is called again. This continues until
-   the `index` goes out of bounds. If that happens, the `Dice` function is called with the `iteration` value incremented
-   by 1.
+
+   1. If it is under 10^6, then the `index` is incremented by 1 and the `GetLucky` is called again.
+
+   2. This continues until the `index` goes out of bounds. If that happens, the `Dice` function is called with the `iteration` value incremented by 1.
 
 4. The final number (`luckyNumber`) is calculated by using the formula `math.Mod(float64(lucky), math.Pow(10, 4))` which
    divides the value of lucky by 10^4 (10000) and gets the remainder. This ensures that the final number is in the range
@@ -168,15 +169,15 @@ if err != nil {
 
 2. The `GetRandomInt` function extracts a substring of length 13 from the `hash` string starting at the position `0`.
 
-    1. This substring is then converted from a hexadecimal string to an integer.
+   1. This substring is then converted from a hexadecimal string to an integer.
 
-    2. The value `e` (2^52) is calculated, which is approximately 4.5035e+15. This value represents the maximum value
-       that can be represented precisely in the mantissa of a 64-bit floating-point number.
+   2. The value `e` (2^52) is calculated, which is approximately 4.5035e+15. This value represents the maximum value
+      that can be represented precisely in the mantissa of a 64-bit floating-point number.
 
-    3. The formula `math.Floor((float64(valueFromHash) / e) * float64(max))` calculates a random number that is in the
-       range of `[0, max]`.
+   3. The formula `math.Floor((float64(valueFromHash) / e) * float64(max))` calculates a random number that is in the
+      range of `[0, max]`.
 
-    4. The function returns the random integer and any error that may have occurred during the conversion.
+   4. The function returns the random integer and any error that may have occurred during the conversion.
 
 3. The `GetRollColor` function finds the corresponding color and bait from the index number `rollValue` which was
    returned from `GetRandomInt`.
@@ -221,25 +222,25 @@ Think of it as a Pascal's triangle.
 
 2. The for loop loops for any number in the range `[0, rows]`.
 
-    1. The function calculates an HMAC-SHA256 hash using the `serverSeed` and a combined `seed`. This hash is used as a
-       source of randomness.
+   1. The function calculates an HMAC-SHA256 hash using the `serverSeed` and a combined `seed`. This hash is used as a
+      source of randomness.
 
-    2. The `GetLucky` function extracts a substring of length 5 from the `hash` string starting at the
-       position `index*5`. This substring is then converted from a hexadecimal string to an integer. The function
-       returns the random integer and any error that may have occurred during the conversion.
+   2. The `GetLucky` function extracts a substring of length 5 from the `hash` string starting at the
+      position `index*5`. This substring is then converted from a hexadecimal string to an integer. The function
+      returns the random integer and any error that may have occurred during the conversion.
 
-    3. The for loop ensures that the `lucky` integer is above 10^6 (1000000) since it will be divided by 10^4 (10000)
-       later. If it is under 10^6, then the `index` is incremented by 1 and the `GetLucky` is called again. This
-       continues until the `index` goes out of bounds. If that happens, the `Dice` function is called with
-       the `iteration` value incremented by 1.
+   3. The for loop ensures that the `lucky` integer is above 10^6 (1000000) since it will be divided by 10^4 (10000)
+      later. If it is under 10^6, then the `index` is incremented by 1 and the `GetLucky` is called again. This
+      continues until the `index` goes out of bounds. If that happens, the `Dice` function is called with
+      the `iteration` value incremented by 1.
 
-    4. The final number (`luckyNumber`) is calculated by using the formula `math.Mod(float64(lucky), math.Pow(10, 4))`
-       which divides the value of lucky by 10^4 (10000) and gets the remainder. This ensures that the final number is in
-       the range of `[0, 9999]`.
+   4. The final number (`luckyNumber`) is calculated by using the formula `math.Mod(float64(lucky), math.Pow(10, 4))`
+      which divides the value of lucky by 10^4 (10000) and gets the remainder. This ensures that the final number is in
+      the range of `[0, 9999]`.
 
-    5. If the luckyNumber is in the range of `[0, 4999]` the ball goes to the left. (coordinate -= 1)
+   5. If the luckyNumber is in the range of `[0, 4999]` the ball goes to the left. (coordinate -= 1)
 
-       If the luckyNumber is in the range of `[5000, 9999]` the ball goes to the right. (coordinate += 1)
+      If the luckyNumber is in the range of `[5000, 9999]` the ball goes to the right. (coordinate += 1)
 
 3. The function returns the column number `(rows + coordinate) / 2` that the ball landed on.
 
