@@ -2,7 +2,6 @@ package vero
 
 import (
 	"github.com/pastc/vero/internal"
-	"math"
 	"strconv"
 )
 
@@ -26,5 +25,5 @@ func Roll(serverSeed string, publicSeed string, nonce int, maximum int, colorMap
 	}
 	rollColor := internal.GetRollColor(int(rollValue), colorMap, baitMap)
 
-	return rollColor, int(math.Floor(rollValue)), nil
+	return rollColor, int(rollValue), nil
 }

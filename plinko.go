@@ -29,7 +29,7 @@ func Plinko(serverSeed string, clientSeed string, nonce int, iteration int, rows
 			return 0, err
 		}
 
-		for float64(lucky) >= math.Pow(10, 6) {
+		for lucky >= math.Pow(10, 6) {
 			index++
 			lucky, err = internal.GetLucky(hash, index)
 			if err != nil {
@@ -41,7 +41,7 @@ func Plinko(serverSeed string, clientSeed string, nonce int, iteration int, rows
 			}
 		}
 
-		luckyNumber := int(math.Floor(math.Mod(float64(lucky), math.Pow(10, 4))))
+		luckyNumber := int(math.Floor(math.Mod(lucky, math.Pow(10, 4))))
 		if luckyNumber < 5000 {
 			coordinate -= 1
 		} else {

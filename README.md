@@ -12,7 +12,7 @@ All the algorithms are provably fair.
 go get github.com/pastc/vero
 ```
 
-## Feature
+## Features
 
 - Provably fair
 - Many games:
@@ -23,173 +23,229 @@ go get github.com/pastc/vero
 
 ## Guide
 
-### Crash
-
-###### Controllable variables
+### Common arguments
 
 ```go
-// HouseEdge i.e, percentage that the house gets
-HouseEdge = 6.66
+// Generated automatically. Is private and is changed periodically. It should become public after being decommissioned.
+var serverSeed string
+
+// Generated uniquely to each player. Can be changed anytime by the player themselves.
+var clientSeed string
+
+// Generated automatically. Is public and is changed periodically.
+var publicSeed string
+
+// A number that is incremented by 1 for each game played.
+var nonce int
+
+// A number that is incremented by 1 if the randomly generated value goes out of bounds and eventually exhausts all available random numbers within the available hash.
+var iteration int
 ```
 
-###### Example
+### Crash
+
+#### Arguments
 
 ```go
-seed := "2826d440b0fcad643e3008693c3a93ef81b31675ca00d686e44c40d5e83d7bb6"
+var serverSeed string
+// houseEdge i.e, percentage that the house gets.
+var houseEdge float64
+```
 
-crashPoint, err := vero.Crash(seed)
+#### Example
+
+```go
+// Remember to divide the crashPoint by 100 to get the percentage
+crashPoint, err := vero.Crash(serverSeed, houseEdge)
 if err != nil {
   log.Fatal(err)
 }
-
-// crashPoint should be 126
 ```
 
-###### Explanation
+#### Explanation
 
-The server should first generate a chain of 10 million SHA512 hashes, starting with a server secret that has been
-repeatedly fed the output of SHA512 back into itself 10 million times. Then, the crash game is played through this chain
-of hashes in reverse order, using the values as source data for generating each game's outcome.
+1. The function calculates an HMAC-SHA256 hash using the `serverSeed` and a combined `seed`. This hash is used as a
+   source of randomness.
 
-Anyone can easily verify the integrity of the whole chain as the server should publish the hash used to calculate the
-outcome after each game ends.
+2. The most significant 52 bits of the hash are extracted and interpreted as a hexadecimal number, which is then
+   converted to an integer (`h`).
 
-If you apply the SHA512 function to a revealed seed, you'll get the hash for the previously played game, and so on until
-you get the hash for the first ever played game round on the chain.
+3. The value `e` (2^52) is calculated, which is approximately 4.5035e+15. This value represents the maximum value that
+   can be represented precisely in the mantissa of a 64-bit floating-point number.
 
-Though, for security reasons, it would not be safe to keep using the same hash chain for a lot of games (> 1 million) in
-a row, as these games would last several years. The longer the chain is in use, the higher the risk is that the
-originating seed is found by a malicious third-party (though it is unlikely). Thus, the server should periodically
-update the base seed to ensure that the lifetime of a chain is not too long and the risk is minimised. When the server
-updates the chain, they should publish the first hash and the corresponding matchId. By publishing the seeds, the server
-is preventing itself from switching or modifing the chain.
+4. The function then calculates the crash point multiplier (`result`) using the values of `h` and `e`. The
+   formula `(100*e - float64(h)) / (e - float64(h))` maps the value of `h` (which is in the range `[0, e]`) to a value
+   in the range `[100, infinity]`.
+
+5. The `houseEdgeModifier` is calculated based on the specified house edge percentage. For example, if the house edge is
+   5%, the `houseEdgeModifier` will be 0.95 with the lowest crashing point of 100.
+
+6. The final crash point multiplier (`endResult`) is calculated by multiplying result by `houseEdgeModifier` and
+   ensuring that it is at least 100 (the minimum crash point).
+
+7. The function returns the crash point multiplier `endResult` as an integer, which represents the crash point
+   multiplier.
 
 ### Dice
 
-###### Controllable variables
+#### Arguments
 
 ```go
-None
+var serverSeed string
+var clientSeed string
+var nonce int
+var iteration int
 ```
 
-###### Example
+#### Example
 
 ```go
-serverSeed := "1c5cff3922c8dc1fc9188b3cc2805acdafb6b3a51f51860b59f98eb1753c170d"
-clientSeed := "5b60f37f764fdb9700d202d6caf3a0cf1d5e67020b0ce1f6570d16f34150cc71"
-nonce := 1
-
-value, err := vero.Dice(serverSeed, clientSeed, nonce, 0)
+// Remember to divide the value by 100 to get a number from 0 to 99.99
+value, err := vero.Dice(serverSeed, clientSeed, nonce, iteration)
 if err != nil {
   log.Fatal(err)
 }
-
-// value should be 7473
 ```
 
-###### Explanation
+#### Explanation
 
-The server seed is generated first before you specify your client seed. Both seeds together prevent manipulation from
-the server and verifies the roll integrity after the result calculation. Every roll has a unique server seed randomly
-generated in advance, this server seed will only be updated when you choose to update your client seed. The server
-hashes the server seed with the SHA512 cryptographic function and then publishes the hashed server seeds for the player
-to see.
+1. The function calculates an HMAC-SHA512 hash using the `serverSeed` and a combined `seed`. This hash is used as a
+   source of randomness.
 
-Due to this applied hashing function, the player can verify the integrity of the roll by updating your client seed to
-get the server seed of the player, which they then can apply the function to get the roll number. The client seed can be
-edited freely by users before each roll.
+2. The `GetLucky` function extracts a substring of length 5 from the `hash` string starting at the position `index*5`.
+   This substring is then converted from a hexadecimal string to an integer. The function returns the random integer and
+   any error that may have occurred during the conversion.
 
-As the client seed affects every roll result, changing it to any seed of your choice at any time means you can ensure
-that it's impossible for the server to manipulate the result. However, the SHA512 function the server uses to generate
-the roll
-is deterministic, if the client seed is combined with the same server seed, it will generate exactly the same roll
-result every time. This could be used to abuse the system, so the server uses something called a 'nonce' which prevents
-this from
-being abusable. Each roll done using the same server seed & client seed pair will also be paired with a different nonce,
-which is simply a number starting at 0 and incremented by 1 for each roll done.
+3. The for loop ensures that the `lucky` integer is above 10^6 (1000000) since it will be divided by 10^4 (10000) later.
+   If it is under 10^6, then the `index` is incremented by 1 and the `GetLucky` is called again. This continues until
+   the `index` goes out of bounds. If that happens, the `Dice` function is called with the `iteration` value incremented
+   by 1.
 
-Lastly, for each roll the server generates, it applies an iteration count, starting at 0. The reason for this fourth
-variable in the seed is just in case the randomly generated value goes out of bounds and eventually exhausts all
-available random numbers within the available hash. In this case, we will generate a new hash using the exact same seed
-pair as before, while simply incrementing this iteration value by 1. In this sense, it works in very much the same way
-as the nonce. We do not have any control over which iteration value is used to generate the final result as it is all
-algorithmically pre-determined.
+4. The final number (`luckyNumber`) is calculated by using the formula `math.Mod(float64(lucky), math.Pow(10, 4))` which
+   divides the value of lucky by 10^4 (10000) and gets the remainder. This ensures that the final number is in the range
+   of `[0, 9999]`.
+
+5. The function returns the random value `luckyNumber`.
+
+#### Explanation
 
 ### Roll
 
-###### Controllable variables
+#### Arguments
 
 ```go
-// Maximum is the maximum value that can be rolled
-var Maximum = 15
-
-// ColorMap is colors mapped to values
-var ColorMap = map[int]string{
-  0:  "Green",
-  1:  "Red",
-  2:  "Red",
-  3:  "Red",
-  4:  "Red",
-  5:  "Red",
-  6:  "Red",
-  7:  "Red",
-  8:  "Black",
-  9:  "Black",
-  10: "Black",
-  11: "Black",
-  12: "Black",
-  13: "Black",
-  14: "Black",
-}
-
-// BaitMap is baits mapped to values
-var BaitMap = map[int]string{
-  4:  "Bait",
-  11: "Bait",
-}
+var serverSeed string
+var publicSeed string
+var nonce int
+// maximum represents the maximum value that can be rolled, counting from 0.
+//
+// Example if maximum is 5:
+// 0, 1, 2, 3, 4
+var maximum int
+// colorMap represents the colors mapped to values.
+var colorMap map[int]string
+// baitMap represents the baits mapped to values.
+var baitMap map[int]string
 ```
 
-###### Example
+#### Example
 
 ```go
-serverSeed := "1c5cff3922c8dc1fc9188b3cc2805acdafb6b3a51f51860b59f98eb1753c170d"
-clientSeed := "1c064b20e2ed52a5c4db0361a2523e8901db2342f95bd0dd1d9a68a46b8cc483"
-nonce := 5345510
-
-color, value, err := vero.Dice(serverSeed, clientSeed, nonce)
+// color represents the color that it landed on
+// value represents the number that it landed on
+color, value, err := vero.Dice(serverSeed, publicSeed, nonce, maximum, colorMap, baitMap)
 if err != nil {
   log.Fatal(err)
 }
-
-// color, value should be Red, 1
 ```
 
-###### Explanation
+#### Explanation
+
+1. The function calculates an HMAC-SHA256 hash using the `serverSeed` and a combined `seed`. This hash is used as a
+   source of randomness.
+
+2. The `GetRandomInt` function extracts a substring of length 13 from the `hash` string starting at the position `0`.
+
+    1. This substring is then converted from a hexadecimal string to an integer.
+
+    2. The value `e` (2^52) is calculated, which is approximately 4.5035e+15. This value represents the maximum value
+       that can be represented precisely in the mantissa of a 64-bit floating-point number.
+
+    3. The formula `math.Floor((float64(valueFromHash) / e) * float64(max))` calculates a random number that is in the
+       range of `[0, max]`.
+
+    4. The function returns the random integer and any error that may have occurred during the conversion.
+
+3. The `GetRollColor` function finds the corresponding color and bait from the index number `rollValue` which was
+   returned from `GetRandomInt`.
+
+4. The function returns the random value `rollValue`, the color and bait `rollColor`.
 
 ### Plinko
 
-###### Controllable variables
+#### Arguments
 
 ```go
-None
+var serverSeed string
+var clientSeed string
+var nonce int
+var iteration int
+// rows represents the number of rows in the triangle.
+// 0	   0
+// 1	  0 1
+// 2	 0 1 2
+// 3	0 1 2 3
+var rows int
 ```
 
-###### Example
+#### Example
 
 ```go
-serverSeed := "62476aade71d19f24f145306f5755fca07498ce90823b223db734568e4665dedce7fd8d33a6fdcdbd1a5e9a8d2bcfce53ef757048fac6a987d55fc064bdcd0b8"
-clientSeed := "8b13c8014a7704bbccec153354259eba7f8cdfab47caf51e6701e60727f5500f75e9f506fc61c3e6f5063775c17c70b5af476000fadf04ca44399ef465be352a"
-nonce := 493587
-
-value, percentage, err := vero.Plinko(serverSeed, clientSeed, nonce, 0, 16)
+// column represents the index of the column that the ball dropped into.
+//    0
+//   0 1
+//  0 1 2
+// 0 1 2 3
+column, err := vero.Plinko(serverSeed, clientSeed, nonce, iteration, rows)
 if err != nil {
   log.Fatal(err)
 }
-
-// value, percentage should be 9, 17.456054
 ```
 
-###### Explanation
+#### Explanation
+
+```
+0      0
+1     0 1
+2    0 1 2
+3   0 1 2 3
+```
+
+1. Variable `coordinate` is initialised to track the net deviation from the center position.
+
+2. The for loop loops for any number in the range `[0, rows]`.
+
+    1. The function calculates an HMAC-SHA256 hash using the `serverSeed` and a combined `seed`. This hash is used as a
+       source of randomness.
+
+    2. The `GetLucky` function extracts a substring of length 5 from the `hash` string starting at the
+       position `index*5`. This substring is then converted from a hexadecimal string to an integer. The function
+       returns the random integer and any error that may have occurred during the conversion.
+
+    3. The for loop ensures that the `lucky` integer is above 10^6 (1000000) since it will be divided by 10^4 (10000)
+       later. If it is under 10^6, then the `index` is incremented by 1 and the `GetLucky` is called again. This
+       continues until the `index` goes out of bounds. If that happens, the `Dice` function is called with
+       the `iteration` value incremented by 1.
+
+    4. The final number (`luckyNumber`) is calculated by using the formula `math.Mod(float64(lucky), math.Pow(10, 4))`
+       which divides the value of lucky by 10^4 (10000) and gets the remainder. This ensures that the final number is in
+       the range of `[0, 9999]`.
+
+    5. If the luckyNumber is in the range of `[0, 4999]` the ball goes to the left. (coordinate -= 1)
+
+       If the luckyNumber is in the range of `[5000, 9999]` the ball goes to the right. (coordinate += 1)
+
+3. The function returns the column number `(rows + coordinate) / 2` that the ball landed on.
 
 ## Documentation
 

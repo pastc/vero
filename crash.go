@@ -28,7 +28,7 @@ func Crash(serverSeed string, houseEdge float64) (int, error) {
 	// The house always wins
 	// houseEdgePercent of 5 will result in modifier of 0.95 = 5% house edge with the lowest crash point of 100
 	houseEdgeModifier := 1 - houseEdge/100
-	endResult := math.Max(100, result*houseEdgeModifier)
+	endResult := math.Floor(math.Max(100, result*houseEdgeModifier))
 
-	return int(math.Floor(endResult)), nil
+	return int(endResult), nil
 }

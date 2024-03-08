@@ -19,7 +19,7 @@ func Dice(serverSeed string, clientSeed string, nonce int, iteration int) (int, 
 		return 0, err
 	}
 
-	for float64(lucky) >= math.Pow(10, 6) {
+	for lucky >= math.Pow(10, 6) {
 		index++
 		lucky, err = internal.GetLucky(hash, index)
 		if err != nil {
@@ -31,7 +31,7 @@ func Dice(serverSeed string, clientSeed string, nonce int, iteration int) (int, 
 		}
 	}
 
-	luckyNumber := math.Mod(float64(lucky), math.Pow(10, 4))
+	luckyNumber := math.Mod(lucky, math.Pow(10, 4))
 
 	return int(luckyNumber), nil
 }

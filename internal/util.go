@@ -14,10 +14,10 @@ func GetCombinedSeed(seedParameters ...string) string {
 	return strings.Join(seedParameters, "-")
 }
 
-func GetLucky(hash string, index int) (int, error) {
+func GetLucky(hash string, index int) (float64, error) {
 	hashLucky := hash[index*5 : (index*5)+5]
 	luckyNumber, err := strconv.ParseInt(hashLucky, 16, 64)
-	return int(luckyNumber), err
+	return float64(luckyNumber), err
 }
 
 func GetRandomInt(max int, hash string) (float64, error) {
@@ -30,9 +30,9 @@ func GetRandomInt(max int, hash string) (float64, error) {
 
 	// Dynamic result for this roll
 	e := math.Pow(2, 52)
-	result := float64(valueFromHash) / e
+	result := math.Floor((float64(valueFromHash) / e) * float64(max))
 
-	return math.Floor(result * float64(max)), nil
+	return result, nil
 }
 
 func GetRollColor(rollValue int, colorMap map[int]string, baitMap map[int]string) string {
