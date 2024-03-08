@@ -15,6 +15,7 @@ go get github.com/pastc/vero
 ## Features
 
 - No third-party dependencies
+- As minimal as possible
 - Provably fair
 - Many games:
   - Crash
@@ -145,18 +146,13 @@ var nonce int
 // Example if maximum is 5:
 // 0, 1, 2, 3, 4
 var maximum int
-// colorMap represents the colors mapped to values.
-var colorMap map[int]string
-// baitMap represents the baits mapped to values.
-var baitMap map[int]string
 ```
 
 #### Example
 
 ```go
-// color represents the color that it landed on
-// value represents the number that it landed on
-color, value, err := vero.Dice(serverSeed, publicSeed, nonce, maximum, colorMap, baitMap)
+// Use something like a map to map the value to colors, bait, etc.
+value, err := vero.Roll(serverSeed, publicSeed, nonce, maximum)
 if err != nil {
   log.Fatal(err)
 }
@@ -179,10 +175,7 @@ if err != nil {
 
    4. The function returns the random integer and any error that may have occurred during the conversion.
 
-3. The `GetRollColor` function finds the corresponding color and bait from the index number `rollValue` which was
-   returned from `GetRandomInt`.
-
-4. The function returns the random value `rollValue`, the color and bait `rollColor`.
+3. The function returns the random value `rollValue`.
 
 ### Plinko
 
@@ -210,7 +203,7 @@ if err != nil {
 #### Explanation
 
 ```
-Think of it as a Pascal's triangle.
+Count it like this.
 
 0      0
 1     0 1

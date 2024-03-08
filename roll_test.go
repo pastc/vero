@@ -2,9 +2,10 @@ package vero
 
 import (
 	"fmt"
-	"github.com/pastc/vero/internal"
 	"strconv"
 	"testing"
+
+	"github.com/pastc/vero/internal"
 )
 
 func TestRoll(t *testing.T) {
@@ -55,10 +56,11 @@ func TestRoll(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(fmt.Sprintf("%s,%s,%d", tt.serverSeed, tt.publicSeed, tt.nonce), func(t *testing.T) {
-			color, value, err := Roll(tt.serverSeed, tt.publicSeed, tt.nonce, maximum, colorMap, baitMap)
+			value, err := Roll(tt.serverSeed, tt.publicSeed, tt.nonce, maximum)
 			if err != nil {
 				t.Fatalf("got %v", err)
 			}
+			color := internal.GetRollColor(value, colorMap, baitMap)
 			if color != tt.want.color {
 				t.Errorf("got %s, want %s", color, tt.want.color)
 			}
@@ -70,31 +72,9 @@ func TestRoll(t *testing.T) {
 }
 
 func FuzzRoll(f *testing.F) {
-	colorMap := map[int]string{
-		0:  "Green",
-		1:  "Red",
-		2:  "Red",
-		3:  "Red",
-		4:  "Red",
-		5:  "Red",
-		6:  "Red",
-		7:  "Red",
-		8:  "Black",
-		9:  "Black",
-		10: "Black",
-		11: "Black",
-		12: "Black",
-		13: "Black",
-		14: "Black",
-	}
-	baitMap := map[int]string{
-		4:  "Bait",
-		11: "Bait",
-	}
-
 	f.Add(0, 1, 0, 0)
 	f.Fuzz(func(t *testing.T, serverSeedNum int, clientSeedNum int, nonce int, maximum int) {
-		_, _, err := Roll(internal.Hash256(strconv.Itoa(serverSeedNum)), internal.Hash256(strconv.Itoa(clientSeedNum)), nonce, maximum, colorMap, baitMap)
+		_, err := Roll(internal.Hash256(strconv.Itoa(serverSeedNum)), internal.Hash256(strconv.Itoa(clientSeedNum)), nonce, maximum)
 		if err != nil {
 			t.Fatalf("got %v", err)
 		}
