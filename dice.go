@@ -1,9 +1,10 @@
 package vero
 
 import (
-	"github.com/pastc/vero/internal"
 	"math"
 	"strconv"
+
+	"github.com/pastc/vero/internal"
 )
 
 // Dice generates a random integer from 0 to 9999
