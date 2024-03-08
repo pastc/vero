@@ -1,10 +1,10 @@
 package vero
 
 import (
-	"fmt"
-	"github.com/pastc/vero/internal"
 	"strconv"
 	"testing"
+
+	"github.com/pastc/vero/internal"
 )
 
 func TestCrash(t *testing.T) {
@@ -25,7 +25,7 @@ func TestCrash(t *testing.T) {
 	}
 
 	for _, tt := range tests {
-		t.Run(fmt.Sprintf("%s", tt.serverSeed), func(t *testing.T) {
+		t.Run(tt.serverSeed, func(t *testing.T) {
 			value, err := Crash(tt.serverSeed, houseEdge)
 			if err != nil {
 				t.Fatalf("got %v", err)

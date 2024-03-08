@@ -1,9 +1,10 @@
 package vero
 
 import (
-	"github.com/pastc/vero/internal"
 	"math"
 	"strconv"
+
+	"github.com/pastc/vero/internal"
 )
 
 // houseEdge i.e, percentage that the house gets

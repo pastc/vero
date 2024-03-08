@@ -1,9 +1,10 @@
 package vero
 
 import (
-	"github.com/pastc/vero/internal"
 	"math"
 	"strconv"
+
+	"github.com/pastc/vero/internal"
 )
 
 // Plinko generates the column number that the ball landed on

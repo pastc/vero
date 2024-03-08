@@ -2,9 +2,10 @@ package vero
 
 import (
 	"fmt"
-	"github.com/pastc/vero/internal"
 	"strconv"
 	"testing"
+
+	"github.com/pastc/vero/internal"
 )
 
 func TestDice(t *testing.T) {
