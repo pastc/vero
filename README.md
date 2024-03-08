@@ -14,6 +14,7 @@ go get github.com/pastc/vero
 
 ## Features
 
+- No third-party dependencies
 - Provably fair
 - Many games:
     - Crash
