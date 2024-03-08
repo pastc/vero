@@ -4,7 +4,7 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/pastc/vero/internal"
+	"github.com/pastc/vero/v2/internal"
 )
 
 // Dice generates a random integer from 0 to 9999

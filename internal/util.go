@@ -52,12 +52,6 @@ func Hash256(s string) string {
 	return string(h.Sum(nil))
 }
 
-//func Hash512(s string) string {
-//	h := sha512.New()
-//	h.Write([]byte(s))
-//	return string(h.Sum(nil))
-//}
-
 func Hmac256(key string, s string) string {
 	hmacHash := hmac.New(sha256.New, []byte(key))
 	hmacHash.Write([]byte(s))

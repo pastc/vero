@@ -9,7 +9,7 @@ All the algorithms are provably fair.
 ## Install
 
 ```shell
-go get github.com/pastc/vero
+go get github.com/pastc/vero/v2
 ```
 
 ## Features

@@ -4,7 +4,7 @@ import (
 	"math"
 	"strconv"
 
-	"github.com/pastc/vero/internal"
+	"github.com/pastc/vero/v2/internal"
 )
 
 // houseEdge i.e, percentage that the house gets

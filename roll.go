@@ -3,7 +3,7 @@ package vero
 import (
 	"strconv"
 
-	"github.com/pastc/vero/internal"
+	"github.com/pastc/vero/v2/internal"
 )
 
 // maximum is the maximum value that can be rolled, counting from 0

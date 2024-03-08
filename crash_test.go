@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/pastc/vero/internal"
+	"github.com/pastc/vero/v2/internal"
 )
 
 func TestCrash(t *testing.T) {
