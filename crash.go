@@ -6,9 +6,9 @@ import (
 	"strconv"
 )
 
-// HouseEdge i.e, percentage that the house gets
+// houseEdge i.e, percentage that the house gets
 
-// Crash generates a random number from 0 to lowest crash point that is calculated with the HouseEdge in mind.
+// Crash generates a random integer from 0 to lowest crash point that is calculated with the houseEdge in mind.
 func Crash(serverSeed string, houseEdge float64) (int, error) {
 	game := "CRASH"
 	seed := internal.GetCombinedSeed(game)

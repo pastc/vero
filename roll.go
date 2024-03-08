@@ -11,7 +11,7 @@ import (
 
 // baitMap is baits mapped to values
 
-// Roll generates a random number from 0 to maximum and returns the color and bait from colorMap and baitMap
+// Roll generates a random integer from 0 to maximum and returns the color and bait from colorMap and baitMap
 // respectively.
 func Roll(serverSeed string, publicSeed string, nonce int, maximum int, colorMap map[int]string, baitMap map[int]string) (string, int, error) {
 	game := "ROLL"
