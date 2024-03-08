@@ -1,6 +1,6 @@
 # Vero
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/pastc/vero.svg)](https://pkg.go.dev/github.com/pastc/vero)
+[![Go Reference](https://pkg.go.dev/badge/github.com/pastc/vero.svg)](https://pkg.go.dev/github.com/pastc/vero/v2)
 
 The vero package generates random numbers for online casinos games such as dice, roll, crash, etc.
 
