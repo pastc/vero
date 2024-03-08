@@ -35,13 +35,3 @@ package internal
 //func BinomialDistribution(n, r int) float64 {
 //	return float64(Binomial(n, r)) * math.Pow(0.5, float64(n)) * 100
 //}
-
-//
-//// BinomialPascal calculates the binomial distribution using Pascal's triangle. Very fast
-//func BinomialPascal(n, r int) float64 {
-//	m := 0
-//	for i := 0; i <= n; i++ {
-//		m += Binomial(n, i)
-//	}
-//	return float64(Binomial(n, r)) / float64(m) * 100
-//}
