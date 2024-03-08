@@ -8,11 +8,11 @@ package internal
 //	return n * Factorial(n-1)
 //}
 
-// Binomial
-//
-// n = Row number
-//
-// r = Column number
+////Binomial
+////
+////n = Row number
+////
+////r = Column number
 //func Binomial(n, r int) int {
 //	if n < 0 || r < 0 {
 //		return 0
@@ -31,7 +31,7 @@ package internal
 //	return b
 //}
 
-// BinomialDistribution calculates the binomial distribution probability.
+//// BinomialDistribution calculates the binomial distribution probability.
 //func BinomialDistribution(n, r int) float64 {
 //	return float64(Binomial(n, r)) * math.Pow(0.5, float64(n)) * 100
 //}
