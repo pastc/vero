@@ -39,6 +39,7 @@ var publicSeed string
 var nonce int
 
 // A number that is incremented by 1 if the randomly generated value goes out of bounds and eventually exhausts all available random numbers within the available hash.
+// Should be 0 when calling the function from outside.
 var iteration int
 ```
 
@@ -101,7 +102,7 @@ var iteration int
 
 ```go
 // Remember to divide the value by 100 to get a number from 0 to 99.99
-value, err := vero.Dice(serverSeed, clientSeed, nonce, iteration)
+value, err := vero.Dice(serverSeed, clientSeed, nonce, 0)
 if err != nil {
   log.Fatal(err)
 }
@@ -198,7 +199,7 @@ var rows int
 
 ```go
 // column represents the index of the column that the ball dropped into.
-column, err := vero.Plinko(serverSeed, clientSeed, nonce, iteration, rows)
+column, err := vero.Plinko(serverSeed, clientSeed, nonce, 0, rows)
 if err != nil {
   log.Fatal(err)
 }
